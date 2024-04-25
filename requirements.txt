@@ -1,0 +1,6 @@
+django==4.2.10
+requests==2.31.0
+debugpy # Required for debugging.
+youtube-transcript-api==0.5.0
+google-generativeai==0.5.2
+Markdown==3.6

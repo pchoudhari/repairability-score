@@ -1,0 +1,38 @@
+{
+    "configurations": [
+
+        {
+            "name": "Cloud Run: Run/Debug Locally",
+            "type": "cloudcode.cloudrun",
+            "request": "launch",
+            "build": {
+                "docker": {
+                    "path": "Dockerfile"
+                }
+            },
+            "image": "repairability-score",
+            "service": {
+                "name": "repairability-score",
+                "containerPort": 8080,
+                "resources": {
+                    "limits": {
+                        "memory": "256Mi"
+                    },
+                "env": {
+                    "GEMINI_API_KEY":"<API KEY>"
+                }
+                }
+            },
+            "target": {
+                "minikube": {}
+            },
+            "watch": true,
+            "autoStop": false,
+            "debug": {
+                "sourceFileMap": {
+                    "${workspaceFolder}": "/app"
+                }
+            }
+        }
+    ]
+}

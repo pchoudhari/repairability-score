@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Repairability Score Generator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    {% load static %}
+    <style>
+        body,
+        h1 {
+            font-family: "Raleway", sans-serif
+        }
+
+        body,
+        html {
+            height: 100%
+        }
+
+        .bgimg {
+            /* background-image: url("/static/mobile_image.jpg"); */
+            background-color: darkgreen;
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+        }
+
+        input[type=text1] {
+            background: none;
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-image: url("{% static 'Repairability/searchicon.png' %}");
+            background-position: 10px 13px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+        }
+
+        div.ex3 {
+            color: black;
+            background-color: white;
+            min-width: 300px;
+            width: 100%;
+            height: 200px;
+            overflow: auto;
+            position: relative;
+            /* left: 5%; */
+            text-align: left;
+            /* padding-left: 5px; */
+            font-size: large;
+        }
+    </style>
+    <script>
+        function youtueIDRequired() {
+            var empt = document.forms["youtubeid"]["youtubeid"].value;
+            if (empt == "") {
+                alert("Please enter the Youtube ID");
+                return false;
+            }
+            else {
+                // alert('Code has accepted : you can try another');
+                return true;
+            }
+        }
+
+        function transcriptRequired() {
+            var empt = "{{youtubetranscript}}";
+            if (empt == "") {
+                alert("Please complete the Step 1");
+                return false;
+            }
+            else {
+                // alert('Code has accepted : you can try another');
+                return true;
+            }
+        }
+
+        function clearFields() {
+            document.forms["youtubeid"]["youtubeid"].value = "";
+            document.getElementById("youtubetranscript").innerHTML = "";
+            document.getElementById("repairabilitySummary").innerHTML = "";
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- <div class="w3-content w3-margin-top" style="max-width:1400px"> -->
+    <div class="bgimg w3-display-container w3-text-white">
+        <!-- Header -->
+        <header class="w3-container w3-center w3-padding-32">
+            <h1><b>REPAIRABILITY SCORE GENERATOR</b></h1>
+            <p>Google AI Hackathon project: Generate a repairability score of a mobile phone based on it's teardown
+                video.</p>
+
+            <span class="input-group-btn">
+                <button style="max-width: 150px; margin-top: 10px; margin: auto; display: block; font-weight: bold;"
+                    class="w3-button w3-block w3-gray" onclick="clearFields()">
+                    Clear Data</button>
+            </span>
+        </header>
+
+        <div class="w3-row">
+            <div class="w3-col l6 m12 s12 w3-padding-large w3-center">
+                <h1>STEP 1</h1>
+                <h2>Transcript of the youtube video</h2>
+                <form name="youtubeid" action="/" method="post" onsubmit="youtueIDRequired()">
+                    {% csrf_token %}
+                    <input class="w3-input w3-border" name="youtubeid" type="text1" id="tags"
+                        placeholder="Enter the Youtube ID"
+                        style="max-width: 300px; margin: auto; display: block;" spellcheck="false"
+                        value="{{youtubeID}}">
+
+                    <input type="hidden" name="getTranscriptButton" value="True" />
+
+                    <br>
+                    <span class="input-group-btn">
+                        <button
+                            style="max-width: 150px; margin-top: 10px; margin: auto; display: block; font-weight: bold;"
+                            class="w3-button w3-block w3-gray" type="submit"><i
+                                class="fa fa-search w3-margin-right"></i>
+                            Get Transcript</button>
+                    </span>
+
+                </form>
+                <div class="w3-container">
+                    <!-- <h1>Transcript of the youtube video</h1> -->
+                    <br>
+                    <div class="ex3" id="youtubetranscript">{{youtubetranscript}}</div>
+                </div>
+            </div>
+
+            <!-- <div class="w3-display-topright w3-padding-large"> -->
+            <div class="w3-col l6 m12 s12 w3-padding-large w3-center">
+                <h1>STEP 2</h1>
+                <h2>Repairability Summary from Gemini</h2>
+                <form action="/" method="post" onsubmit="transcriptRequired()">
+                    {% csrf_token %}
+                    <input type="hidden" name="transcript" value="{{youtubetranscript}}" />
+                    <input type="hidden" name="repairabilityButton" value="True" />
+                    <input type="hidden" name="youtubeid" value="{{youtubeID}}" />
+                    <span class="input-group-btn">
+                        <button
+                            style="max-width: 200px; margin: auto; display: block; font-weight: bold;"
+                            class="w3-button w3-block w3-gray" type="submit"><i
+                                class="fa fa-search w3-margin-right"></i>
+                            Get Repair Score</button>
+                    </span>
+
+                </form>
+
+                <div class="w3-container">
+                    <!-- <h1>Repairability Summary from Gemini</h1> -->
+                    <br>
+                    <div class="ex3" style="height: 270px;" id="repairabilitySummary">{{repairabilitySummary|safe}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-center w3-black w3-padding-32">
+        <p>&copy; 2023 Repairability Score. All Rights Reserved
+        </p>
+    </footer>
+
+</body>
+
+</html>
