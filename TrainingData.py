@@ -16,12 +16,13 @@ repairabilityscore_question  = "What is the repairability score of this phone?"
 # tab of
 #   https://cloud.google.com/console
 # Please ensure that you have enabled the YouTube Data API for your project.
-DEVELOPER_KEY = 'AIzaSyDxPFaU4q0TQDWz7mM3ne6kKUKd7r3jKJE'
+DEVELOPER_KEY = '<API Key>'
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 YOUTUBE_QUERY = 'mobile teardown disassembly'
+# iFxit and PBK reviews youtube channels
 YOUTUBE_CHANNELID_LIST = [
-                        #   ['UC20o1OUWGrixnCEE1gQ9clg',200],
+                           ['UC20o1OUWGrixnCEE1gQ9clg',200],
                           ['UCHbx9IUW7eCeJsC4sBCTNBA',200]
                           ]
 YOUTUBE_MAX_RESULTS = 50
@@ -93,13 +94,9 @@ def GetTranscript(youtubeID):
     for transcript in transcript_list:  
         # fetch the actual transcript data
         transcript = transcript.fetch()
-        # print(transcript)
         
         for index in range(len(transcript)):
-            # print(transcript[index])
             tmp = (re.sub("([a-zA-Z0-9]+)\'([a-zA-Z0-9]+)", "\\1\\2", str(transcript[index])).replace('\'', '\"')).replace('\\n', ' ').replace('\\xa0', ' ').replace(';', ' ')
-            # retString += json.loads((re.sub("([a-zA-Z0-9]+)\'([a-zA-Z0-9]+)", "\\1\\2", str(transcript[index])).replace('\'', '\"')).replace('\n', ' '))['text']
-            # print(tmp)
             retString += json.loads(tmp)['text']
             retString += " "
         
